@@ -1,6 +1,27 @@
 # core-foundation-extensions
 
-This library provides extensions for core foundation on MacOS.
+This is a Kotlin MultiPlatform library that provides extensions for core foundation framework on MacOS.
+
+# Setup
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+
+kotlin {
+    sourceSets {
+        val macosX64Main by getting {
+            dependencies {
+                implementation("nl.ncaj:core-foundation-extensions:0.1.0")
+            }
+        }
+    }
+}
+
+```
+
+# Usage
 
 Convert kotlin types to cf types: 
 ```kotlin
@@ -38,9 +59,9 @@ When reading data from the above data structures there are helpers to work with 
 val key = "string2".toCFString()
 val cfDictionary = cfDictionaryOf(key to "string2".toCFString())
 
-// by default it's just a non specific pointer type
+// by default, it's just a non-specific pointer type
 val pointer: COpaquePointer? = cfDictionary[key]
 
-// this reinterprets the pointer as a string ref and checks if it's an actual CFString
+// this reinterprets the pointer as a CFStringRef and checks if it's the actual correct type
 val string2: CFStringRef = pointer.asCFString()
 ```
