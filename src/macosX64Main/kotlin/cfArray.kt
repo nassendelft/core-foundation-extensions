@@ -3,29 +3,30 @@ import platform.CoreFoundation.*
 import platform.Foundation.CFBridgingRelease
 import platform.Foundation.CFBridgingRetain
 
+fun cfArrayOf(vararg items: COpaquePointer?) = cfArrayOf(items.toList(), cfArrayCallBacks = null)
+
 fun cfArrayOf(
     items: List<COpaquePointer?>,
     cfArrayCallBacks: CValuesRef<CFArrayCallBacks>? = null
-) = memScoped { CFArrayCreate(null, allocArrayOf(items), items.size.toLong(), cfArrayCallBacks) }
+) = memScoped { CFArrayCreate(kCFAllocatorDefault, allocArrayOf(items), items.size.convert(), cfArrayCallBacks) }
     ?: error("Could not create CFArray")
 
-fun cfArrayOf(vararg items: COpaquePointer?) = cfArrayOf(items.toList(), cfArrayCallBacks = null)
 
 operator fun CFArrayRef.get(index: Int): COpaquePointer? {
     check(index in 0 until size) { "Index ($index) is out of bounds ($size)" }
-    return CFArrayGetValueAtIndex(this@get, index.toLong())
+    return CFArrayGetValueAtIndex(this@get, index.convert())
 }
 
-fun CFArrayRef.indexOf(value: COpaquePointer?, inRange: IntRange = 0..size) =
-    CFArrayGetFirstIndexOfValue(this, cfRangeOf(inRange), value).toInt()
+fun CFArrayRef.indexOf(value: COpaquePointer?, inRange: IntRange = 0 .. size) =
+    CFArrayGetFirstIndexOfValue(this, inRange.toCFRange(), value).toInt()
 
-fun CFArrayRef.lastIndexOf(value: COpaquePointer?, inRange: IntRange = 0..size) =
-    CFArrayGetLastIndexOfValue(this, cfRangeOf(inRange), value).toInt()
+fun CFArrayRef.lastIndexOf(value: COpaquePointer?, inRange: IntRange = 0 .. size) =
+    CFArrayGetLastIndexOfValue(this, inRange.toCFRange(), value).toInt()
 
 fun CFArrayRef.count() = size
 
-fun CFArrayRef.countOf(value: COpaquePointer?, inRange: IntRange = 0..size) =
-    CFArrayGetCountOfValue(this, cfRangeOf(inRange), value)
+fun CFArrayRef.countOf(value: COpaquePointer?, inRange: IntRange = 0 .. size) =
+    CFArrayGetCountOfValue(this, inRange.toCFRange(), value)
 
 val CFArrayRef.size get() = CFArrayGetCount(this).toInt()
 
@@ -47,6 +48,10 @@ fun CFArrayRef.getCFSetOrNull(index: Int) = get(index)?.asCFSet()
 fun CFArrayRef.getCFBag(index: Int) = checkNotNull(getCFBagOrNull(index))
 
 fun CFArrayRef.getCFBagOrNull(index: Int) = get(index)?.asCFBag()
+
+fun CFArrayRef.getCFData(index: Int) = checkNotNull(getCFDataOrNull(index))
+
+fun CFArrayRef.getCFDataOrNull(index: Int) = get(index)?.asCFData()
 
 fun CFArrayRef.getCFString(index: Int) = checkNotNull(getCFStringOrNull(index))
 

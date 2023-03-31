@@ -1,6 +1,4 @@
 import kotlinx.cinterop.*
-import platform.CoreFoundation.CFDictionaryGetKeysAndValues
-import platform.CoreFoundation.CFDictionaryRef
 import platform.CoreFoundation.CFMutableDictionaryRef
 import platform.Foundation.CFBridgingRetain
 
@@ -24,7 +22,7 @@ class CFMutableMap internal constructor(
     override val values: MutableCollection<COpaquePointer?>
         get() = super.values.toMutableList()
 
-    override fun clear() = cfDictionary.clear()
+    override fun clear() = cfDictionary.removeAll()
 
     override fun remove(key: COpaquePointer?): COpaquePointer? {
         val element = cfDictionary[key]

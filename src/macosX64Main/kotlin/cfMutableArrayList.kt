@@ -1,6 +1,4 @@
 import kotlinx.cinterop.COpaquePointer
-import kotlinx.cinterop.CPointed
-import kotlinx.cinterop.CPointer
 import platform.CoreFoundation.CFArrayRef
 import platform.CoreFoundation.CFMutableArrayRef
 import platform.Foundation.CFBridgingRetain
@@ -17,27 +15,27 @@ fun cfMutableArrayListOf(vararg element: COpaquePointer?) = CFMutableArrayList(c
 open class CFMutableArrayList internal constructor(private val cfArray: CFMutableArrayRef) :
     MutableList<COpaquePointer?>, CFArrayList(cfArray) {
     override fun add(element: COpaquePointer?): Boolean {
-        cfArray.add(element)
+        cfArray.append(element)
         return true
     }
 
     override fun add(index: Int, element: COpaquePointer?) {
-        cfArray.add(index, element)
+        cfArray.insert(index, element)
     }
 
     override fun addAll(index: Int, elements: Collection<COpaquePointer?>): Boolean {
         val array = elements.toList().toCFArray()
-        cfArray.addAll(array, index .. elements.size + index)
+        cfArray.append(array, index .. elements.size + index)
         return true
     }
 
     override fun addAll(elements: Collection<COpaquePointer?>): Boolean {
         val array = elements.toList().toCFArray()
-        cfArray.addAll(array)
+        cfArray.append(array)
         return true
     }
 
-    override fun clear() = cfArray.clear()
+    override fun clear() = cfArray.removeAll()
 
     override fun iterator(): MutableIterator<COpaquePointer?> =
         CFMutableArrayListIterator(cfArray)
@@ -97,7 +95,7 @@ open class CFMutableArrayList internal constructor(private val cfArray: CFMutabl
         cfArray: CFArrayRef,
         startIndex: Int = 0
     ) : MutableListIterator<COpaquePointer?>, CFArrayListIterator(cfArray, startIndex) {
-        override fun add(element: COpaquePointer?) = cfArray.add(nextIndex, element)
+        override fun add(element: COpaquePointer?) = cfArray.insert(nextIndex, element)
 
         override fun remove() {
             cfArray.removeAt(previousIndex)
@@ -115,21 +113,21 @@ open class CFMutableArrayList internal constructor(private val cfArray: CFMutabl
         toView: Int = cfArray.size
     ): CFArraySubList(cfArray, fromView, toView), MutableList<COpaquePointer?> {
         override fun add(element: COpaquePointer?): Boolean {
-            cfArray.add(toView, element)
+            cfArray.insert(toView, element)
             return true
         }
 
         override fun add(index: Int, element: COpaquePointer?) {
-            cfArray.add(index + fromView, element)
+            cfArray.insert(index + fromView, element)
         }
 
         override fun addAll(index: Int, elements: Collection<COpaquePointer?>): Boolean {
-            elements.forEachIndexed { i, element -> cfArray.add(index + fromView + i, element) }
+            elements.forEachIndexed { i, element -> cfArray.insert(index + fromView + i, element) }
             return true
         }
 
         override fun addAll(elements: Collection<COpaquePointer?>): Boolean {
-            elements.forEachIndexed { index, element -> cfArray.add(index + fromView, element) }
+            elements.forEachIndexed { index, element -> cfArray.insert(index + fromView, element) }
             return true
         }
 
@@ -197,7 +195,7 @@ open class CFMutableArrayList internal constructor(private val cfArray: CFMutabl
             toView: Int = cfArray.size,
             startIndex: Int = 0,
         ) : MutableListIterator<COpaquePointer?>, CFArraySubListIterator(cfArray, fromView, toView, startIndex) {
-            override fun add(element: COpaquePointer?) = cfArray.add(nextIndex, element)
+            override fun add(element: COpaquePointer?) = cfArray.insert(nextIndex, element)
 
             override fun remove() {
                 cfArray.removeAt(previousIndex)

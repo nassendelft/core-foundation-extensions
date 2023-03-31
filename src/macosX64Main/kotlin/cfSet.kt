@@ -8,11 +8,13 @@ fun cfSetOf(vararg items: COpaquePointer?) = cfSetOf(items.toList(), cfSetCallba
 fun cfSetOf(items: List<COpaquePointer?>, cfSetCallback: CValuesRef<CFSetCallBacks>? = null) = memScoped {
     val array = allocArray<COpaquePointerVar>(items.size)
     items.forEachIndexed { index, value -> array[index] = value }
-    CFSetCreate(null, array, items.size.toLong(), cfSetCallback)
+    CFSetCreate(kCFAllocatorDefault, array, items.size.toLong(), cfSetCallback)
         ?: error("Could not create CFSet")
 }
 
 val CFSetRef.size get() = CFSetGetCount(this).toInt()
+
+fun CFSetRef.count() = size
 
 @Suppress("UNCHECKED_CAST")
 fun CFSetRef.toSet() = CFBridgingRelease(this) as Set<COpaquePointer?>
@@ -22,7 +24,7 @@ fun CFSetRef.contains(item: COpaquePointer?) = CFSetContainsValue(this, item)
 
 @Suppress("FunctionName")
 fun CFMutableSet(capacity: Int = 0, cfSetCallback: CValuesRef<CFSetCallBacks>? = null) =
-    CFSetCreateMutable(null, capacity.toLong(), cfSetCallback)
+    CFSetCreateMutable(kCFAllocatorDefault, capacity.convert(), cfSetCallback)
         ?: error("Could not create CFMutableSet")
 
 fun cfMutableSetOf(vararg items: COpaquePointer?) = CFMutableSet()

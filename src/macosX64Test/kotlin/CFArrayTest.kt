@@ -1,7 +1,5 @@
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class CFArrayTest {
 
@@ -11,6 +9,7 @@ class CFArrayTest {
         val arrayValue = cfArrayOf()
         val setValue = cfSetOf()
         val bagValue = cfBagOf()
+        val dataValue = cfDataOf()
         val byteValue = 1.toByte().toCFNumber()
         val shortValue = 1.toShort().toCFNumber()
         val intValue = 1.toCFNumber()
@@ -24,6 +23,7 @@ class CFArrayTest {
             arrayValue,
             setValue,
             bagValue,
+            dataValue,
             byteValue,
             shortValue,
             intValue,
@@ -34,28 +34,29 @@ class CFArrayTest {
             stringValue,
             stringValue,
         )
-        assertEquals(13, cfArray.size)
-        assertEquals(13, cfArray.count())
+        assertEquals(14, cfArray.size)
+        assertEquals(14, cfArray.count())
         assertEquals(dictValue, cfArray.getCFDictionary(0))
         assertEquals(arrayValue, cfArray.getCFArray(1))
         assertEquals(setValue, cfArray.getCFSet(2))
         assertEquals(bagValue, cfArray.getCFBag(3))
-        assertEquals(intValue, cfArray.getCFNumber(6))
-        assertEquals(booleanValue, cfArray.getCFBoolean(10))
-        assertEquals(stringValue, cfArray.getCFString(11))
+        assertEquals(dataValue, cfArray.getCFData(4))
+        assertEquals(intValue, cfArray.getCFNumber(7))
+        assertEquals(booleanValue, cfArray.getCFBoolean(11))
+        assertEquals(stringValue, cfArray.getCFString(12))
 
-        assertEquals("string", cfArray.getString(11))
-        assertEquals(1.toByte(), cfArray.getByte(4))
-        assertEquals(1.toShort(), cfArray.getShort(5))
-        assertEquals(1, cfArray.getInt(6))
-        assertEquals(1L, cfArray.getLong(7))
-        assertEquals(1f, cfArray.getFloat(8))
-        assertEquals(1.0, cfArray.getDouble(9))
-        assertEquals(true, cfArray.getBoolean(10))
+        assertEquals("string", cfArray.getString(12))
+        assertEquals(1.toByte(), cfArray.getByte(5))
+        assertEquals(1.toShort(), cfArray.getShort(6))
+        assertEquals(1, cfArray.getInt(7))
+        assertEquals(1L, cfArray.getLong(8))
+        assertEquals(1f, cfArray.getFloat(9))
+        assertEquals(1.0, cfArray.getDouble(10))
+        assertEquals(true, cfArray.getBoolean(11))
 
-        assertEquals(11, cfArray.indexOf(stringValue))
-        assertEquals(12, cfArray.lastIndexOf(stringValue))
         assertEquals(2, cfArray.countOf(stringValue))
+        assertEquals(12, cfArray.indexOf(stringValue))
+        assertEquals(13, cfArray.lastIndexOf(stringValue))
         cfArray.release()
     }
 
@@ -87,20 +88,20 @@ class CFArrayTest {
         assertEquals("string1", cfArray[0]?.asCFString()?.stringValue)
 
         assertEquals(3, cfArray.size)
-        cfArray.add(1, "stringx".toCFString())
+        cfArray.insert(1, "stringx".toCFString())
         assertEquals(4, cfArray.size)
         assertEquals("stringx", cfArray[1]?.asCFString()?.stringValue)
 
         assertEquals(4, cfArray.size)
-        cfArray.addAll(cfArrayOf("new1String0".toCFString(), "new1String1".toCFString()))
+        cfArray.append(cfArrayOf("new1String0".toCFString(), "new1String1".toCFString()))
         assertEquals(6, cfArray.size)
 
         val new2String0 = "new2String0".toCFString()
-        val cfArray2 = cfArray + cfArrayOf(new2String0, "new2String1".toCFString())
-        cfArray2.clear()
-        assertEquals(0, cfArray2.size)
+        cfArray.append(cfArrayOf(new2String0, "new2String1".toCFString()))
+        assertEquals(8, cfArray.size)
+        cfArray.removeAll()
+        assertEquals(0, cfArray.size)
 
         cfArray.release()
-        cfArray2.release()
     }
 }

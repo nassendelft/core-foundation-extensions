@@ -17,20 +17,18 @@ fun cfMutableArrayOf(vararg items: COpaquePointer?) = cfMutableArrayOf(items.toL
 fun cfMutableArrayOf(
     items: List<COpaquePointer?>,
     cfArrayCallBacks: CValuesRef<CFArrayCallBacks>? = null
-) = CFMutableArray(cfArrayCallBacks = cfArrayCallBacks).apply { items.forEach { add(it) } }
+) = CFMutableArray(cfArrayCallBacks = cfArrayCallBacks).apply { items.forEach { append(it) } }
 
 operator fun CFMutableArrayRef.set(index: Int, item: COpaquePointer?) =
     CFArraySetValueAtIndex(this, index.toLong(), item)
 
-operator fun CFMutableArrayRef.plus(array: CFArrayRef) = this.copy().also { it.addAll(array) }
+fun CFMutableArrayRef.append(array: CFArrayRef, inRange: IntRange = 0 .. array.size) =
+    CFArrayAppendArray(this, array, inRange.toCFRange())
 
-fun CFMutableArrayRef.addAll(array: CFArrayRef, inRange: IntRange = 0..array.size) =
-    CFArrayAppendArray(this, array, cfRangeOf(inRange))
-
-fun CFMutableArrayRef.add(item: COpaquePointer?) =
+fun CFMutableArrayRef.append(item: COpaquePointer?) =
     CFArrayAppendValue(this, item)
 
-fun CFMutableArrayRef.add(index: Int, item: COpaquePointer?) {
+fun CFMutableArrayRef.insert(index: Int, item: COpaquePointer?) {
     check(index in 0 until size) { "Index ($index) is out of bounds ($size)" }
     CFArrayInsertValueAtIndex(this, index.toLong(), item)
 }
@@ -42,7 +40,7 @@ fun CFMutableArrayRef.removeAt(index: Int): COpaquePointer? {
     return value
 }
 
-fun CFMutableArrayRef.clear() = CFArrayRemoveAllValues(this)
+fun CFMutableArrayRef.removeAll() = CFArrayRemoveAllValues(this)
 
 fun CFMutableArrayRef.copy(capacity: Int = 0) =
     CFArrayCreateMutableCopy(null, capacity.toLong(), this)

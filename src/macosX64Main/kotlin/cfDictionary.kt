@@ -13,22 +13,16 @@ fun cfDictionaryOf(
     items: List<Pair<COpaquePointer, COpaquePointer?>>,
     cfDictionaryKeyCallBacks: CValuesRef<CFDictionaryKeyCallBacks>? = null,
     cfDictionaryValueCallBacks: CValuesRef<CFDictionaryValueCallBacks>? = null
-): CFDictionaryRef = memScoped{
-    val keys = allocArray<COpaquePointerVar>(items.size)
-    val values = allocArray<COpaquePointerVar>(items.size)
-    items.forEachIndexed { index, (key, value) ->
-        keys[index] = key
-        values[index] = value
-    }
-    return CFDictionaryCreate(
-        null,
-        keys,
-        values,
+) = memScoped {
+    CFDictionaryCreate(
+        kCFAllocatorDefault,
+        allocArrayOf(items.map { it.first }),
+        allocArrayOf(items.map { it.second }),
         items.size.toLong(),
         cfDictionaryKeyCallBacks,
         cfDictionaryValueCallBacks
-    ) ?: error("Could not create CFDictionary")
-}
+    )
+} ?: error("Could not create CFDictionary")
 
 operator fun CFDictionaryRef.get(key: COpaquePointer?): COpaquePointer? = memScoped {
     val value: COpaquePointerVar = alloc()
@@ -38,6 +32,8 @@ operator fun CFDictionaryRef.get(key: COpaquePointer?): COpaquePointer? = memSco
 }
 
 val CFDictionaryRef.size get() = CFDictionaryGetCount(this).toInt()
+
+fun CFDictionaryRef.count() = size
 
 fun CFDictionaryRef.contains(key: COpaquePointer?) = containsKey(key)
 
@@ -79,6 +75,14 @@ fun CFDictionaryRef.getCFBagOrNull(key: COpaquePointer?) = get(key)?.asCFBag()
 fun CFDictionaryRef.getCFMutableBag(key: COpaquePointer?) = checkNotNull(getCFMutableBagOrNull(key))
 
 fun CFDictionaryRef.getCFMutableBagOrNull(key: COpaquePointer?) = get(key)?.asCFMutableBag()
+
+fun CFDictionaryRef.getCFData(key: COpaquePointer?) = checkNotNull(getCFDataOrNull(key))
+
+fun CFDictionaryRef.getCFDataOrNull(key: COpaquePointer?) = get(key)?.asCFData()
+
+fun CFDictionaryRef.getCFMutableData(key: COpaquePointer?) = checkNotNull(getCFMutableDataOrNull(key))
+
+fun CFDictionaryRef.getCFMutableDataOrNull(key: COpaquePointer?) = get(key)?.asCFMutableData()
 
 fun CFDictionaryRef.getCFString(key: COpaquePointer?) = checkNotNull(getCFStringOrNull(key))
 

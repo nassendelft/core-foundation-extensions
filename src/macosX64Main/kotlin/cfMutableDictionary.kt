@@ -1,5 +1,6 @@
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CValuesRef
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.reinterpret
 import platform.CoreFoundation.*
 import platform.Foundation.CFBridgingRelease
@@ -12,7 +13,7 @@ fun CFMutableDictionary(
     cfDictionaryValueCallBacks: CValuesRef<CFDictionaryValueCallBacks>? = null
 ) = CFDictionaryCreateMutable(
     null,
-    capacity.toLong(),
+    capacity.convert(),
     cfDictionaryKeyCallBacks,
     cfDictionaryValueCallBacks
 ) ?: error("Could not create CFMutableDictionary")
@@ -27,7 +28,7 @@ fun CFMutableDictionaryRef.add(key: COpaquePointer?, value: COpaquePointer?) = C
 
 fun CFMutableDictionaryRef.remove(key: COpaquePointer?) = CFDictionaryRemoveValue(this, key)
 
-fun CFMutableDictionaryRef.clear() = CFDictionaryRemoveAllValues(this)
+fun CFMutableDictionaryRef.removeAll() = CFDictionaryRemoveAllValues(this)
 
 @Suppress("UNCHECKED_CAST")
 fun CFMutableDictionaryRef.toMutableMap() = CFBridgingRelease(this) as MutableMap<COpaquePointer?, COpaquePointer?>

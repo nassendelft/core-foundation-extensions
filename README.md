@@ -39,6 +39,8 @@ val cfArray = listOf<COpaquePointer?>().toCFArray()
 val cfMutableArray = mutableListOf<COpaquePointer?>().toCFMutableArray()
 val cfSet = setOf<COpaquePointer?>().toCFSet()
 val cfMutableSet = mutableSetOf<COpaquePointer?>().toCFMutableSet()
+val cfData = listOf(1.toUbyte()).toCFData()
+val cfMutableData = mutableListOf(1.toUbyte()).toCFMutableData()
 ```
 
 Create CF data structures
@@ -47,10 +49,12 @@ val cfDictionary = cfDictionaryOf()
 val cfMutableDictionary = cfMutableDictionaryOf()
 val cfArray = cfArrayOf()
 val cfMutableArray = cfMutableArrayOf()
-val cfSet = cfSet()
-val cfMutableSet = cfMutableSet()
-val cfBag = cfBag()
-val cfMutableBag = cfMutableBag()
+val cfSet = cfSetOf()
+val cfMutableSet = cfMutableSetOf()
+val cfBag = cfBagOf()
+val cfMutableBag = cfMutableBagOf()
+val cfData = cfDataOf()
+val cfMutableData = cfMutableDataOf()
 ```
 
 When reading data from the above data structures there are helpers to work with the correct type:
