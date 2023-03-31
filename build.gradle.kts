@@ -14,10 +14,22 @@ repositories {
 }
 
 kotlin {
-    macosX64()
+    val targets = listOf(
+        macosX64(),
+        macosArm64(),
+        iosArm64(),
+        iosX64(),
+        iosSimulatorArm64(),
+    )
+
     sourceSets {
-        val macosX64Main by getting
-        val macosX64Test by getting
+        val darwinNativeMain by creating {
+            targets.forEach { it.compilations["main"].defaultSourceSet.dependsOn(this) }
+        }
+        val darwinNativeTest by creating {
+            targets.forEach { it.compilations["test"].defaultSourceSet.dependsOn(this) }
+        }
+
     }
 }
 
