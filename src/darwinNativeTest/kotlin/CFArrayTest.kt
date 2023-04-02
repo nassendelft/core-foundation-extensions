@@ -13,6 +13,7 @@ class CFArrayTest {
         val dataValue = cfDataOf()
         val binaryHeapValue = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
         val bitVectorValue = cfBitVectorOf()
+        val dateValue = CFDate()
         val byteValue = 1.toByte().toCFNumber()
         val shortValue = 1.toShort().toCFNumber()
         val intValue = 1.toCFNumber()
@@ -29,6 +30,7 @@ class CFArrayTest {
             dataValue,
             binaryHeapValue,
             bitVectorValue,
+            dateValue,
             byteValue,
             shortValue,
             intValue,
@@ -39,8 +41,8 @@ class CFArrayTest {
             stringValue,
             stringValue,
         )
-        assertEquals(16, cfArray.size)
-        assertEquals(16, cfArray.count())
+        assertEquals(17, cfArray.size)
+        assertEquals(17, cfArray.count())
         assertEquals(dictValue, cfArray.getCFDictionary(0))
         assertEquals(arrayValue, cfArray.getCFArray(1))
         assertEquals(setValue, cfArray.getCFSet(2))
@@ -48,22 +50,23 @@ class CFArrayTest {
         assertEquals(dataValue, cfArray.getCFData(4))
         assertEquals(binaryHeapValue, cfArray.getCFBinaryHeap(5))
         assertEquals(bitVectorValue, cfArray.getCFBitVector(6))
-        assertEquals(intValue, cfArray.getCFNumber(9))
-        assertEquals(booleanValue, cfArray.getCFBoolean(13))
-        assertEquals(stringValue, cfArray.getCFString(14))
+        assertEquals(dateValue, cfArray.getCFDate(7))
+        assertEquals(intValue, cfArray.getCFNumber(10))
+        assertEquals(booleanValue, cfArray.getCFBoolean(14))
+        assertEquals(stringValue, cfArray.getCFString(15))
 
-        assertEquals("string", cfArray.getString(14))
-        assertEquals(1.toByte(), cfArray.getByte(7))
-        assertEquals(1.toShort(), cfArray.getShort(8))
-        assertEquals(1, cfArray.getInt(9))
-        assertEquals(1L, cfArray.getLong(10))
-        assertEquals(1f, cfArray.getFloat(11))
-        assertEquals(1.0, cfArray.getDouble(12))
-        assertEquals(true, cfArray.getBoolean(13))
+        assertEquals("string", cfArray.getString(15))
+        assertEquals(1.toByte(), cfArray.getByte(8))
+        assertEquals(1.toShort(), cfArray.getShort(9))
+        assertEquals(1, cfArray.getInt(10))
+        assertEquals(1L, cfArray.getLong(11))
+        assertEquals(1f, cfArray.getFloat(12))
+        assertEquals(1.0, cfArray.getDouble(13))
+        assertEquals(true, cfArray.getBoolean(14))
 
         assertEquals(2, cfArray.countOf(stringValue))
-        assertEquals(14, cfArray.indexOf(stringValue))
-        assertEquals(15, cfArray.lastIndexOf(stringValue))
+        assertEquals(15, cfArray.indexOf(stringValue))
+        assertEquals(16, cfArray.lastIndexOf(stringValue))
         cfArray.release()
     }
 

@@ -85,6 +85,10 @@ fun CFArrayRef.getCFError(index: Int) = checkNotNull(getCFErrorOrNull(index))
 
 fun CFArrayRef.getCFErrorOrNull(index: Int) = get(index)?.asCFError()
 
+fun CFArrayRef.getCFDate(index: Int) = checkNotNull(getCFDateOrNull(index))
+
+fun CFArrayRef.getCFDateOrNull(index: Int) = get(index)?.asCFDate()
+
 fun CFArrayRef.getCFString(index: Int) = checkNotNull(getCFStringOrNull(index))
 
 fun CFArrayRef.getCFStringOrNull(index: Int) = get(index)?.asCFString()

@@ -1,4 +1,3 @@
-import kotlinx.cinterop.ptr
 import platform.CoreFoundation.kCFStringBinaryHeapCallBacks
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,6 +21,8 @@ class CFDictionaryTest {
         val binaryHeapValue = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
         val bitVectorKey = "binaryHeap".toCFString()
         val bitVectorValue = cfBitVectorOf()
+        val dateKey = "date".toCFString()
+        val dateValue = CFDate()
         val numberKey = "number".toCFString()
         val numberValue = 1.toCFNumber()
         val booleanKey = "boolean".toCFString()
@@ -34,6 +35,7 @@ class CFDictionaryTest {
             dataKey to dataValue,
             binaryHeapKey to binaryHeapValue,
             bitVectorKey to bitVectorValue,
+            dateKey to dateValue,
             numberKey to numberValue,
             booleanKey to booleanValue,
         )
@@ -47,6 +49,7 @@ class CFDictionaryTest {
         assertEquals(dataValue, cfDict.getCFData(dataKey))
         assertEquals(binaryHeapValue, cfDict.getCFBinaryHeap(binaryHeapKey))
         assertEquals(bitVectorValue, cfDict.getCFBitVector(bitVectorKey))
+        assertEquals(dateValue, cfDict.getCFDate(dateKey))
         assertEquals(numberValue, cfDict.getCFNumber(numberKey))
         assertEquals(booleanValue, cfDict.getCFBoolean(booleanKey))
         cfDict.release()

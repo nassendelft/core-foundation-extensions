@@ -100,6 +100,10 @@ fun CFDictionaryRef.getCFError(key: COpaquePointer?) = checkNotNull(getCFErrorOr
 
 fun CFDictionaryRef.getCFErrorOrNull(key: COpaquePointer?) = get(key)?.asCFError()
 
+fun CFDictionaryRef.getCFDate(key: COpaquePointer?) = checkNotNull(getCFDateOrNull(key))
+
+fun CFDictionaryRef.getCFDateOrNull(key: COpaquePointer?) = get(key)?.asCFDate()
+
 fun CFDictionaryRef.getCFString(key: COpaquePointer?) = checkNotNull(getCFStringOrNull(key))
 
 fun CFDictionaryRef.getCFStringOrNull(key: COpaquePointer?) = get(key)?.asCFString()
