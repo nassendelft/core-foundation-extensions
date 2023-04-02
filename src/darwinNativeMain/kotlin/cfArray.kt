@@ -37,17 +37,33 @@ fun CFArrayRef.getCFDictionary(index: Int) = checkNotNull(getCFDictionaryOrNull(
 
 fun CFArrayRef.getCFDictionaryOrNull(index: Int) = get(index)?.asCFDictionary()
 
+fun CFArrayRef.getCFMutableDictionary(index: Int) = checkNotNull(getCFMutableDictionaryOrNull(index))
+
+fun CFArrayRef.getCFMutableDictionaryOrNull(index: Int) = get(index)?.asCFMutableDictionary()
+
 fun CFArrayRef.getCFArray(index: Int) = checkNotNull(getCFArrayOrNull(index))
 
 fun CFArrayRef.getCFArrayOrNull(index: Int) = get(index)?.asCFArray()
+
+fun CFArrayRef.getCFMutableArray(index: Int) = checkNotNull(getCFMutableArrayOrNull(index))
+
+fun CFArrayRef.getCFMutableArrayOrNull(index: Int) = get(index)?.asCFMutableArray()
 
 fun CFArrayRef.getCFSet(index: Int) = checkNotNull(getCFSetOrNull(index))
 
 fun CFArrayRef.getCFSetOrNull(index: Int) = get(index)?.asCFSet()
 
+fun CFArrayRef.getCFMutableSet(index: Int) = checkNotNull(getCFMutableSetOrNull(index))
+
+fun CFArrayRef.getCFMutableSetOrNull(index: Int) = get(index)?.asCFMutableSet()
+
 fun CFArrayRef.getCFBag(index: Int) = checkNotNull(getCFBagOrNull(index))
 
 fun CFArrayRef.getCFBagOrNull(index: Int) = get(index)?.asCFBag()
+
+fun CFArrayRef.getCFMutableBag(index: Int) = checkNotNull(getCFMutableBagOrNull(index))
+
+fun CFArrayRef.getCFMutableBagOrNull(index: Int) = get(index)?.asCFMutableBag()
 
 fun CFArrayRef.getCFData(index: Int) = checkNotNull(getCFDataOrNull(index))
 
