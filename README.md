@@ -13,9 +13,14 @@ kotlin {
     sourceSets {
         val macosX64Main by getting {
             dependencies {
-                implementation("nl.ncaj:core-foundation-extensions:0.1.0")
+                implementation("nl.ncaj:core-foundation-extensions-macosx64:0.3.0")
             }
         }
+        // the following targets are also available:
+        // macosArm64
+        // iosArm64
+        // iosX64
+        // iosSimulatorArm64
     }
 }
 
@@ -41,6 +46,7 @@ val cfSet = setOf<COpaquePointer?>().toCFSet()
 val cfMutableSet = mutableSetOf<COpaquePointer?>().toCFMutableSet()
 val cfData = listOf(1.toUbyte()).toCFData()
 val cfMutableData = mutableListOf(1.toUbyte()).toCFMutableData()
+val cfRange = (0 .. 10).toCFRange()
 ```
 
 Create CF data structures
@@ -55,6 +61,10 @@ val cfBag = cfBagOf()
 val cfMutableBag = cfMutableBagOf()
 val cfData = cfDataOf()
 val cfMutableData = cfMutableDataOf()
+val cfBinaryHeap = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
+val cfBitVector = cfBitVectorOf()
+val cfMutableBitVector = cfMutableBitVectorOf()
+val cfDate = CFDate()
 ```
 
 When reading data from the above data structures there are helpers to work with the correct type:
