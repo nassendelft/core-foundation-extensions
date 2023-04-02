@@ -2,3 +2,4 @@ build/
 .idea/
 /.hotvay
 .gradle
+.DS_Store

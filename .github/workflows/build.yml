@@ -6,8 +6,8 @@ on:
       - 'v*'
 
 jobs:
-  release:
-    name: Build & Release
+  build:
+    name: Build
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +19,33 @@ jobs:
           distribution: 'adopt'
           cache: gradle
 
+      - name: Build
+        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: libs
+          path: ./build/libs/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 16
+        uses: actions/setup-java@v3
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: libs
+
       - name: Publish artifact
         env:
           signing_keyId: ${{ secrets.SIGNING_KEYID }}
@@ -26,7 +53,7 @@ jobs:
           signing_password: ${{ secrets.SIGNING_PASSWORD }}
           ossrhUsername: ${{ secrets.OSSRHUSERNAME }}
           ossrhPassword: ${{ secrets.OSSRHPASSWORD }}
-        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" build publishAllPublicationsToSonatypeRepository
+        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" publishAllPublicationsToSonatypeRepository
 
       - name: Release
         uses: softprops/action-gh-release@v1

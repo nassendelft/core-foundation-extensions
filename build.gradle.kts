@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.8.10"
     `maven-publish`
     signing
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 val publishVersion: String? by project
@@ -38,17 +39,6 @@ val javadocJar by tasks.registering(Jar::class) {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "sonatype"
-            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("ossrhUsername")
-                password = System.getenv("ossrhPassword")
-            }
-        }
-    }
-
     publications.withType<MavenPublication> {
         artifact(javadocJar.get())
 
@@ -73,6 +63,16 @@ publishing {
             scm {
                 url.set("https://github.com/nassendelft/core-foundation-extensions")
             }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        create("myNexus") {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"))
+            username.set(System.getenv("ossrhUsername"))
+            password.set(System.getenv("ossrhPassword"))
         }
     }
 }
