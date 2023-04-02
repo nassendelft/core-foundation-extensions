@@ -39,7 +39,7 @@ class CFDictionaryTest {
             numberKey to numberValue,
             booleanKey to booleanValue,
         )
-        assertEquals(9, cfDict.size)
+        assertEquals(10, cfDict.size)
         assertTrue(cfDict.contains(dictKey))
         assertTrue(cfDict.containsValue(dictValue))
         assertEquals(dictValue, cfDict.getCFDictionary(dictKey))
