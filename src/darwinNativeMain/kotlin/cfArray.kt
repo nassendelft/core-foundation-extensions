@@ -133,6 +133,8 @@ fun CFArrayRef.getDouble(index: Int) = checkNotNull(getDoubleOrNull(index))
 
 fun CFArrayRef.getDoubleOrNull(index: Int) = getCFNumberOrNull(index)?.doubleValue
 
+fun CFArrayRef.isCFNull(index: Int) = CFGetTypeID(get(index)) == CFNullGetTypeID()
+
 fun CFTypeRef.asCFArray(): CFArrayRef {
     check(CFGetTypeID(this) == CFArrayGetTypeID()) {
         "value is not of type CFArray"

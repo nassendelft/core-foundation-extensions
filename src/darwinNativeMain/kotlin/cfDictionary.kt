@@ -148,6 +148,8 @@ fun CFDictionaryRef.getDouble(key: COpaquePointer?) = checkNotNull(getDoubleOrNu
 
 fun CFDictionaryRef.getDoubleOrNull(key: COpaquePointer?) = get(key)?.asCFNumber()?.doubleValue
 
+fun CFDictionaryRef.isCFNull(key: COpaquePointer?) = CFGetTypeID(get(key)) == CFNullGetTypeID()
+
 
 fun CFTypeRef.asCFDictionary(): CFDictionaryRef {
     check(CFGetTypeID(this) == CFDictionaryGetTypeID()) {
