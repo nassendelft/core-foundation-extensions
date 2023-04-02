@@ -1,3 +1,5 @@
+import kotlinx.cinterop.ptr
+import platform.CoreFoundation.kCFStringBinaryHeapCallBacks
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -16,6 +18,8 @@ class CFDictionaryTest {
         val bagValue = cfBagOf()
         val dataKey = "data".toCFString()
         val dataValue = cfDataOf()
+        val binaryHeapKey = "binaryHeap".toCFString()
+        val binaryHeapValue = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
         val numberKey = "number".toCFString()
         val numberValue = 1.toCFNumber()
         val booleanKey = "boolean".toCFString()
@@ -26,10 +30,11 @@ class CFDictionaryTest {
             setKey to setValue,
             bagKey to bagValue,
             dataKey to dataValue,
+            binaryHeapKey to binaryHeapValue,
             numberKey to numberValue,
             booleanKey to booleanValue,
         )
-        assertEquals(7, cfDict.size)
+        assertEquals(8, cfDict.size)
         assertTrue(cfDict.contains(dictKey))
         assertTrue(cfDict.containsValue(dictValue))
         assertEquals(dictValue, cfDict.getCFDictionary(dictKey))
@@ -37,6 +42,7 @@ class CFDictionaryTest {
         assertEquals(setValue, cfDict.getCFSet(setKey))
         assertEquals(bagValue, cfDict.getCFBag(bagKey))
         assertEquals(dataValue, cfDict.getCFData(dataKey))
+        assertEquals(binaryHeapValue, cfDict.getCFBinaryHeap(binaryHeapKey))
         assertEquals(numberValue, cfDict.getCFNumber(numberKey))
         assertEquals(booleanValue, cfDict.getCFBoolean(booleanKey))
         cfDict.release()

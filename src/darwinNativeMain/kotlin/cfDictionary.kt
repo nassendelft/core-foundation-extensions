@@ -84,6 +84,10 @@ fun CFDictionaryRef.getCFMutableData(key: COpaquePointer?) = checkNotNull(getCFM
 
 fun CFDictionaryRef.getCFMutableDataOrNull(key: COpaquePointer?) = get(key)?.asCFMutableData()
 
+fun CFDictionaryRef.getCFBinaryHeap(key: COpaquePointer?) = checkNotNull(getCFBinaryHeapOrNull(key))
+
+fun CFDictionaryRef.getCFBinaryHeapOrNull(key: COpaquePointer?) = get(key)?.asCFBinaryHeap()
+
 fun CFDictionaryRef.getCFString(key: COpaquePointer?) = checkNotNull(getCFStringOrNull(key))
 
 fun CFDictionaryRef.getCFStringOrNull(key: COpaquePointer?) = get(key)?.asCFString()

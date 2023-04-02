@@ -53,6 +53,10 @@ fun CFArrayRef.getCFData(index: Int) = checkNotNull(getCFDataOrNull(index))
 
 fun CFArrayRef.getCFDataOrNull(index: Int) = get(index)?.asCFData()
 
+fun CFArrayRef.getCFBinaryHeap(index: Int) = checkNotNull(getCFBinaryHeapOrNull(index))
+
+fun CFArrayRef.getCFBinaryHeapOrNull(index: Int) = get(index)?.asCFBinaryHeap()
+
 fun CFArrayRef.getCFString(index: Int) = checkNotNull(getCFStringOrNull(index))
 
 fun CFArrayRef.getCFStringOrNull(index: Int) = get(index)?.asCFString()
