@@ -65,6 +65,10 @@ fun CFArrayRef.getCFMutableBitVector(index: Int) = checkNotNull(getCFMutableBitV
 
 fun CFArrayRef.getCFMutableBitVectorOrNull(index: Int) = get(index)?.asCFMutableBitVector()
 
+fun CFArrayRef.getCFError(index: Int) = checkNotNull(getCFErrorOrNull(index))
+
+fun CFArrayRef.getCFErrorOrNull(index: Int) = get(index)?.asCFError()
+
 fun CFArrayRef.getCFString(index: Int) = checkNotNull(getCFStringOrNull(index))
 
 fun CFArrayRef.getCFStringOrNull(index: Int) = get(index)?.asCFString()

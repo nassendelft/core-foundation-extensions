@@ -96,6 +96,10 @@ fun CFDictionaryRef.getCFMutableBitVector(key: COpaquePointer?) = checkNotNull(g
 
 fun CFDictionaryRef.getCFMutableBitVectorOrNull(key: COpaquePointer?) = get(key)?.asCFMutableBitVector()
 
+fun CFDictionaryRef.getCFError(key: COpaquePointer?) = checkNotNull(getCFErrorOrNull(key))
+
+fun CFDictionaryRef.getCFErrorOrNull(key: COpaquePointer?) = get(key)?.asCFError()
+
 fun CFDictionaryRef.getCFString(key: COpaquePointer?) = checkNotNull(getCFStringOrNull(key))
 
 fun CFDictionaryRef.getCFStringOrNull(key: COpaquePointer?) = get(key)?.asCFString()
