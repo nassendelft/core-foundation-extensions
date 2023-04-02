@@ -20,6 +20,8 @@ class CFDictionaryTest {
         val dataValue = cfDataOf()
         val binaryHeapKey = "binaryHeap".toCFString()
         val binaryHeapValue = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
+        val bitVectorKey = "binaryHeap".toCFString()
+        val bitVectorValue = cfBitVectorOf()
         val numberKey = "number".toCFString()
         val numberValue = 1.toCFNumber()
         val booleanKey = "boolean".toCFString()
@@ -31,10 +33,11 @@ class CFDictionaryTest {
             bagKey to bagValue,
             dataKey to dataValue,
             binaryHeapKey to binaryHeapValue,
+            bitVectorKey to bitVectorValue,
             numberKey to numberValue,
             booleanKey to booleanValue,
         )
-        assertEquals(8, cfDict.size)
+        assertEquals(9, cfDict.size)
         assertTrue(cfDict.contains(dictKey))
         assertTrue(cfDict.containsValue(dictValue))
         assertEquals(dictValue, cfDict.getCFDictionary(dictKey))
@@ -43,6 +46,7 @@ class CFDictionaryTest {
         assertEquals(bagValue, cfDict.getCFBag(bagKey))
         assertEquals(dataValue, cfDict.getCFData(dataKey))
         assertEquals(binaryHeapValue, cfDict.getCFBinaryHeap(binaryHeapKey))
+        assertEquals(bitVectorValue, cfDict.getCFBitVector(bitVectorKey))
         assertEquals(numberValue, cfDict.getCFNumber(numberKey))
         assertEquals(booleanValue, cfDict.getCFBoolean(booleanKey))
         cfDict.release()

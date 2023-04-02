@@ -57,6 +57,14 @@ fun CFArrayRef.getCFBinaryHeap(index: Int) = checkNotNull(getCFBinaryHeapOrNull(
 
 fun CFArrayRef.getCFBinaryHeapOrNull(index: Int) = get(index)?.asCFBinaryHeap()
 
+fun CFArrayRef.getCFBitVector(index: Int) = checkNotNull(getCFBitVectorOrNull(index))
+
+fun CFArrayRef.getCFBitVectorOrNull(index: Int) = get(index)?.asCFBitVector()
+
+fun CFArrayRef.getCFMutableBitVector(index: Int) = checkNotNull(getCFMutableBitVectorOrNull(index))
+
+fun CFArrayRef.getCFMutableBitVectorOrNull(index: Int) = get(index)?.asCFMutableBitVector()
+
 fun CFArrayRef.getCFString(index: Int) = checkNotNull(getCFStringOrNull(index))
 
 fun CFArrayRef.getCFStringOrNull(index: Int) = get(index)?.asCFString()
