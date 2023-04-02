@@ -6,11 +6,8 @@ import platform.Foundation.CFBridgingRetain
 fun cfSetOf(vararg items: COpaquePointer?) = cfSetOf(items.toList(), cfSetCallback = null)
 
 fun cfSetOf(items: List<COpaquePointer?>, cfSetCallback: CValuesRef<CFSetCallBacks>? = null) = memScoped {
-    val array = allocArray<COpaquePointerVar>(items.size)
-    items.forEachIndexed { index, value -> array[index] = value }
-    CFSetCreate(kCFAllocatorDefault, array, items.size.toLong(), cfSetCallback)
-        ?: error("Could not create CFSet")
-}
+    CFSetCreate(kCFAllocatorDefault, allocArrayOf(items), items.size.convert(), cfSetCallback)
+} ?: error("Could not create CFSet")
 
 val CFSetRef.size get() = CFSetGetCount(this).toInt()
 
