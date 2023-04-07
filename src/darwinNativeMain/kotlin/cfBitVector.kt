@@ -2,13 +2,6 @@ import kotlinx.cinterop.*
 import platform.CoreFoundation.*
 import platform.darwin.UInt8Var
 
-fun CFTypeRef.asCFBitVector(): CFBitVectorRef {
-    check(CFGetTypeID(this) == CFBitVectorGetTypeID()) {
-        "value is not of type CFBitVector"
-    }
-    return this.reinterpret()
-}
-
 fun cfBitVectorOf(vararg items: UByte) = memScoped {
     check(items.all { it < 2u }) { "Each value can only be either 0x0 or 0x1" }
     CFBitVectorCreate(kCFAllocatorDefault, allocArrayOf(items.asByteArray()).reinterpret(), items.size.convert())
@@ -39,3 +32,10 @@ fun CFBitVectorRef.contains(value: UByte, range: IntRange = 0 .. this.size) =
     CFBitVectorContainsBit(this, range.toCFRange(), value.convert())
 
 fun CFBitVectorRef.copy() = CFBitVectorCreateCopy(null, this)
+
+fun CFTypeRef.asCFBitVector(): CFBitVectorRef {
+    check(CFGetTypeID(this) == CFBitVectorGetTypeID()) {
+        "value is not of type CFBitVector"
+    }
+    return this.reinterpret()
+}

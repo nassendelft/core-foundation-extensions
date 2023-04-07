@@ -5,9 +5,10 @@ import platform.CoreFoundation.*
 fun CFMutableData(size: Int) = CFDataCreateMutable(kCFAllocatorDefault, size.convert())
     ?: error("Could not create CFMutableData")
 
-fun cfMutableDataOf(vararg items: UByte) = cfMutableDataOf(items.toList())
+@Suppress("FunctionName")
+fun CFMutableData(items: List<UByte>) = CFMutableData(items.size).apply { append(items) }
 
-fun cfMutableDataOf(items: List<UByte>) = CFMutableData(items.size).apply { append(items) }
+fun cfMutableDataOf(vararg items: UByte) = CFMutableData(items.toList())
 
 fun CFMutableDataRef.copy(size: Int = this.size) = CFDataCreateMutableCopy(kCFAllocatorDefault, size.convert(), this)
 
@@ -32,4 +33,7 @@ fun CFTypeRef.asCFMutableData(): CFMutableDataRef {
     return this.reinterpret()
 }
 
-fun MutableList<UByte>.toCFData() = cfMutableDataOf(this)
+fun MutableList<UByte>.toCFData() = CFMutableData(this)
+
+@OptIn(ExperimentalUnsignedTypes::class)
+fun ByteArray.toCFMutableData() = CFMutableData(this.asUByteArray().asList())

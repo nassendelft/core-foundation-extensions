@@ -1,18 +1,13 @@
 import kotlinx.cinterop.*
 import platform.CoreFoundation.*
 
-fun CFTypeRef.asCFData(): CFDataRef {
-    check(CFGetTypeID(this) == CFDataGetTypeID()) {
-        "value is not of type CFData"
-    }
-    return this.reinterpret()
-}
-
-fun cfDataOf(vararg items: UByte) = cfDataOf(items.toList())
-
-fun cfDataOf(items: List<UByte>) = memScoped {
+@Suppress("FunctionName")
+fun CFData(items: List<UByte>) = memScoped {
     CFDataCreate(kCFAllocatorDefault, allocArray(items.size) { this.value = items[it] }, items.size.convert())
 } ?: error("Could not create CFData")
+
+@OptIn(ExperimentalUnsignedTypes::class)
+fun cfDataOf(vararg items: UByte) = items.asByteArray().toCFData()
 
 fun CFDataRef.length() = size
 
@@ -25,4 +20,15 @@ fun CFDataRef.toList(): List<UByte> {
     return List(size) { ptr[it] }
 }
 
-fun List<UByte>.toCFData() = cfDataOf(this)
+fun CFTypeRef.asCFData(): CFDataRef {
+    check(CFGetTypeID(this) == CFDataGetTypeID()) {
+        "value is not of type CFData"
+    }
+    return this.reinterpret()
+}
+
+fun List<UByte>.toCFData() = CFData(this)
+
+@OptIn(ExperimentalUnsignedTypes::class)
+fun ByteArray.toCFData() =
+    CFDataCreate(kCFAllocatorDefault, asUByteArray().refTo(0), size.convert())

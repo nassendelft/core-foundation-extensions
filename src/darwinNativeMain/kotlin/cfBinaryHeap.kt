@@ -1,13 +1,6 @@
 import kotlinx.cinterop.*
 import platform.CoreFoundation.*
 
-fun CFTypeRef.asCFBinaryHeap(): CFBinaryHeapRef {
-    check(CFGetTypeID(this) == CFBinaryHeapGetTypeID()) {
-        "value is not of type CFBinaryHeap"
-    }
-    return this.reinterpret()
-}
-
 fun cfBinaryHeapOf(
     callbacks: CFBinaryHeapCallBacks,
     vararg items: COpaquePointer?
@@ -42,3 +35,10 @@ fun CFBinaryHeapRef.contains(item: COpaquePointer?) = CFBinaryHeapContainsValue(
 
 fun CFBinaryHeapRef.copy(capacity: Int = this.size) =
     CFBinaryHeapCreateCopy(null, capacity.convert(), this)
+
+fun CFTypeRef.asCFBinaryHeap(): CFBinaryHeapRef {
+    check(CFGetTypeID(this) == CFBinaryHeapGetTypeID()) {
+        "value is not of type CFBinaryHeap"
+    }
+    return this.reinterpret()
+}
