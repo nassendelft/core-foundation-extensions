@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val macosX64Main by getting {
             dependencies {
-                implementation("nl.ncaj:core-foundation-extensions-macosx64:0.3.0")
+                implementation("nl.ncaj:core-foundation-extensions:0.3.1")
             }
         }
         // the following targets are also available:
