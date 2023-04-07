@@ -33,7 +33,7 @@ fun CFTypeRef.asCFMutableData(): CFMutableDataRef {
     return this.reinterpret()
 }
 
-fun MutableList<UByte>.toCFData() = CFMutableData(this)
+fun MutableList<UByte>.toCFMutableData() = CFMutableData(this)
 
 @OptIn(ExperimentalUnsignedTypes::class)
 fun ByteArray.toCFMutableData() = CFMutableData(this.asUByteArray().asList())

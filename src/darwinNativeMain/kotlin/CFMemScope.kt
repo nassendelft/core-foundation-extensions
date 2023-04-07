@@ -21,6 +21,10 @@ class CFMemScope {
 
     fun cfMutableSet(set: MutableSet<COpaquePointer?>) = set.toCFMutableSet().also(::scoped)
 
+    fun cfData(list: List<UByte>) = list.toCFData().also(::scoped)
+
+    fun cfMutableData(list: MutableList<UByte>) = list.toCFMutableData().also(::scoped)
+
     fun cfString(string: String) = string.toCFString().also(::scoped)
 
     fun cfNumber(value: Byte) = value.toCFNumber().also(::scoped)
