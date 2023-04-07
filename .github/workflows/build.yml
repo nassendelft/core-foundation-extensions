@@ -20,7 +20,7 @@ jobs:
           cache: gradle
 
       - name: Build
-        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}"
+        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -53,7 +53,7 @@ jobs:
           signing_password: ${{ secrets.SIGNING_PASSWORD }}
           ossrhUsername: ${{ secrets.OSSRHUSERNAME }}
           ossrhPassword: ${{ secrets.OSSRHPASSWORD }}
-        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" publishAllPublicationsToSonatypeRepository
+        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Release
         uses: softprops/action-gh-release@v1

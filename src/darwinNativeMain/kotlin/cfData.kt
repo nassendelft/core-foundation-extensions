@@ -30,5 +30,7 @@ fun CFTypeRef.asCFData(): CFDataRef {
 fun List<UByte>.toCFData() = CFData(this)
 
 @OptIn(ExperimentalUnsignedTypes::class)
-fun ByteArray.toCFData() =
-    CFDataCreate(kCFAllocatorDefault, asUByteArray().refTo(0), size.convert())
+fun ByteArray.toCFData(): CFDataRef? = memScoped {
+    val bytes = if (isEmpty()) allocArray<UByteVar>(0) else asUByteArray().refTo(0)
+    return CFDataCreate(kCFAllocatorDefault, bytes, size.convert())
+}

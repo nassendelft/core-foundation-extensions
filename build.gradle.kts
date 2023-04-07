@@ -69,8 +69,9 @@ publishing {
 
 nexusPublishing {
     repositories {
-        create("myNexus") {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"))
+        create("Sonatype") {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
             username.set(System.getenv("ossrhUsername"))
             password.set(System.getenv("ossrhPassword"))
         }
