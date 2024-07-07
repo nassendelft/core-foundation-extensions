@@ -1,8 +1,9 @@
+import org.jreleaser.model.Active
+
 plugins {
     kotlin("multiplatform") version "2.0.0"
     `maven-publish`
-    signing
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+    id("org.jreleaser") version "1.13.1"
 }
 
 val publishVersion: String? by project
@@ -59,24 +60,28 @@ publishing {
             }
         }
     }
-}
 
-nexusPublishing {
     repositories {
-        create("Sonatype") {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username.set(System.getenv("ossrhUsername"))
-            password.set(System.getenv("ossrhPassword"))
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
         }
     }
 }
 
-signing {
-    useInMemoryPgpKeys(
-        System.getenv("signing_keyId"),
-        System.getenv("signing_key"),
-        System.getenv("signing_password"),
-    )
-    sign(publishing.publications)
+jreleaser {
+    signing {
+        active.set(Active.ALWAYS)
+        armored = true
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                create("Sonatype") {
+                    active.set(Active.ALWAYS)
+                    url.set("https://central.sonatype.com/api/v1/publisher")
+                    stagingRepository("target/staging-deploy")
+                }
+            }
+        }
+    }
 }

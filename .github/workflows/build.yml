@@ -48,14 +48,12 @@ jobs:
 
       - name: Publish artifact
         env:
-          signing_keyId: ${{ secrets.SIGNING_KEYID }}
-          signing_key: ${{ secrets.SIGNING_KEY }}
-          signing_password: ${{ secrets.SIGNING_PASSWORD }}
-          ossrhUsername: ${{ secrets.OSSRHUSERNAME }}
-          ossrhPassword: ${{ secrets.OSSRHPASSWORD }}
-        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" publishToSonatype closeAndReleaseSonatypeStagingRepository
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_PASSWORD: ${{ secrets.JRELEASER_MAVENCENTRAL_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.JRELEASER_MAVENCENTRAL_USERNAME }}
+        run: ./gradlew --no-daemon -PpublishVersion="${GITHUB_REF_NAME:1}" publish jreleaserFullRelease
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
