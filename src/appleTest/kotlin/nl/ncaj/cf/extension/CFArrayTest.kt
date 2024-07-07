@@ -1,6 +1,5 @@
 package nl.ncaj.cf.extension
 
-import ncaj.CoreFoundation.extensions.*
 import platform.CoreFoundation.kCFStringBinaryHeapCallBacks
 import kotlin.test.Test
 import kotlin.test.assertEquals

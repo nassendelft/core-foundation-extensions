@@ -11,16 +11,11 @@ repositories {
 
 kotlin {
     sourceSets {
-        val macosX64Main by getting {
+        val appleMain by getting {
             dependencies {
                 implementation("nl.ncaj:core-foundation-extensions:0.3.1")
             }
         }
-        // the following targets are also available:
-        // macosArm64
-        // iosArm64
-        // iosX64
-        // iosSimulatorArm64
     }
 }
 
@@ -28,7 +23,7 @@ kotlin {
 
 # Usage
 
-Convert kotlin types to cf types: 
+Convert kotlin types to cf types. Each of these calls transfers ownership of the values to the caller.
 ```kotlin
 val cfByte = 1.toByte().toCFNumber()
 val cfShort = 2.toShort().toCFNumber()
@@ -49,26 +44,25 @@ val cfMutableData = mutableListOf(1.toUbyte()).toCFMutableData()
 val cfRange = (0 .. 10).toCFRange()
 ```
 
-Create CF data structures
+Create CF data structures.
 ```kotlin
 val cfDictionary = cfDictionaryOf()
-val cfMutableDictionary = cfMutableDictionaryOf()
+val cfMutableDictionary = cfMutableDictionaryOf() // or CFMutableDictionary()
 val cfArray = cfArrayOf()
-val cfMutableArray = cfMutableArrayOf()
+val cfMutableArray = cfMutableArrayOf() // or CFMutableArray()
 val cfSet = cfSetOf()
-val cfMutableSet = cfMutableSetOf()
+val cfMutableSet = cfMutableSetOf() // or CFMutableSet()
 val cfBag = cfBagOf()
-val cfMutableBag = cfMutableBagOf()
+val cfMutableBag = cfMutableBagOf() // or CFMutableBag()
 val cfData = cfDataOf()
-val cfMutableData = cfMutableDataOf()
+val cfMutableData = cfMutableDataOf() // CFMutableData()
 val cfBinaryHeap = cfBinaryHeapOf(kCFStringBinaryHeapCallBacks)
 val cfBitVector = cfBitVectorOf()
-val cfMutableBitVector = cfMutableBitVectorOf()
+val cfMutableBitVector = cfMutableBitVectorOf() // or CFMutableBitVector()
 val cfDate = CFDate()
 ```
 
-When reading data from the above data structures there are helpers to work with the correct type:
-
+When reading data from the above data structures there are helpers to work with the correct type.
 ```kotlin
 val key = "string2".toCFString()
 val cfDictionary = cfDictionaryOf(key to "string2".toCFString())
@@ -79,3 +73,16 @@ val pointer: COpaquePointer? = cfDictionary[key]
 // this reinterprets the pointer as a CFStringRef and checks if it's the actual correct type
 val string2: CFStringRef = pointer.asCFString()
 ```
+
+A helper lambda can be used to automatically release the allocated values so you don't need to CFRelease().
+```kotlin
+import nl.ncaj.cf.extension.CFMemScope.Companion.cfMemScoped
+
+fun func() = cfMemScoped {
+    val arr = cfMutableArray()
+    
+    // ...
+    
+    // no need to call CFRelease() here, it's automatically released
+}
+````

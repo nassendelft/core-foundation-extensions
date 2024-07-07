@@ -1,6 +1,5 @@
 package nl.ncaj.cf.extension
 
-import ncaj.CoreFoundation.extensions.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
