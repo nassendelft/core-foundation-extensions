@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.10"
+    kotlin("multiplatform") version "2.0.0"
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
@@ -15,22 +15,16 @@ repositories {
 }
 
 kotlin {
-    val targets = listOf(
-        macosX64(),
-        macosArm64(),
-        iosArm64(),
-        iosX64(),
-        iosSimulatorArm64(),
-    )
+    macosX64()
+    macosArm64()
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
 
     sourceSets {
-        val darwinNativeMain by creating {
-            targets.forEach { it.compilations["main"].defaultSourceSet.dependsOn(this) }
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
         }
-        val darwinNativeTest by creating {
-            targets.forEach { it.compilations["test"].defaultSourceSet.dependsOn(this) }
-        }
-
     }
 }
 
