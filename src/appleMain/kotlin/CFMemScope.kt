@@ -12,18 +12,26 @@ class CFMemScope {
 
     fun cfMutableArray(list: MutableList<COpaquePointer?>) = list.toCFMutableArray().also(::scoped)
 
+    fun cfMutableArray(size: Int = 0) = CFMutableArray(size).also(::scoped)
+
     fun cfDictionary(map: Map<COpaquePointer?, COpaquePointer?>) = map.toCFDictionary().also(::scoped)
 
     fun cfMutableDictionary(map: MutableMap<COpaquePointer?, COpaquePointer?>) =
         map.toCFMutableDictionary().also(::scoped)
 
+    fun cfMutableDictionary(size: Int = 0) = CFMutableDictionary(size).also(::scoped)
+
     fun cfSet(set: Set<COpaquePointer?>) = set.toCFSet().also(::scoped)
 
     fun cfMutableSet(set: MutableSet<COpaquePointer?>) = set.toCFMutableSet().also(::scoped)
 
+    fun cfMutableSet(size: Int = 0) = CFMutableSet(size).also(::scoped)
+
     fun cfData(list: List<UByte>) = list.toCFData().also(::scoped)
 
     fun cfMutableData(list: MutableList<UByte>) = list.toCFMutableData().also(::scoped)
+
+    fun cfMutableData(size: Int = 0) = CFMutableData(size).also(::scoped)
 
     fun cfString(string: String) = string.toCFString().also(::scoped)
 
